@@ -30,4 +30,37 @@ NordicS.Game.init = function(){
     this.eventManager = NordicS.Event;
     //setup ship
     this.ship = NordicS.Ship;
-}
+    this.ship.init({
+        day:0,
+        distance:0,
+        clan: 30,
+        food: 80,
+        ships:2,
+        gold: 300,
+        weapon:2
+    });
+
+    //pass references
+    this.ship.ui = this.ui;
+    this.ship.eventManager = this.eventManager;
+
+    this.ui.game = this;
+    this.ui.ship = this.ship;
+    this.ui.eventManager = this.eventManager;
+
+    this.eventManager.game = this;
+    this.eventManager.ship = this.ship;
+    this.eventManager.ui = this. ui;
+
+    //begin adventure!
+    this.startJourney();
+};
+
+//start the journey and time starts running
+NordicS.Game.startJourney = function(){
+    this.gameActive = true;
+    this.previousTime = null;
+    this.ui.notify('A great adventure begins', 'positive');
+
+    this.step();
+};

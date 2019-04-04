@@ -47,8 +47,13 @@ main{
     left: 0;
   }
   
-  /*#stats-area {
-      }*/
+  #stats-area {
+    width: 46%;
+    height: 80%;
+    border: 1px solid black;
+    background-color: blue;
+    margin-top: 1%;
+  }
   
   .stat-value {
     float: right;
