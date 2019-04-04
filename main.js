@@ -18,10 +18,6 @@ NordicS.enemyGoldAvg = 50;
 
 NordicS.Game = {};
 /*----- app's state (variables) -----*/ 
-/*----- cached element references -----*/ 
-/*----- event listeners -----*/ 
-/*----- functions -----*/
-
 //initate the game
 NordicS.Game.init = function(){
     //reference ui
@@ -64,3 +60,17 @@ NordicS.Game.startJourney = function(){
 
     this.step();
 };
+/*----- cached element references -----*/ 
+document.getElementById('stat-day').innerHTML
+document.getElementById('stat-distance').innerHTML
+document.getElementById('stat-clan').innerHTML
+document.getElementById('stat-ships').innerHTML
+document.getElementById('stat-gold').innerHTML
+document.getElementById('stat-wp').innerHTML
+document.getElementById('stat-loot').innerHTML
+
+//update ship position
+document.getElementById('ship')
+/*----- event listeners -----*/ 
+/*----- functions -----*/
+
