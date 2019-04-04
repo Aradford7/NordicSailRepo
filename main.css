@@ -22,11 +22,9 @@ main{
   }
   
       
-  #journey {
-    height: 100%;
-    background-color: #5F9FFF;
+  /*#journey {
   }
-  
+  */
   #event {
     background-color: magenta;
   }
@@ -49,18 +47,8 @@ main{
     left: 0;
   }
   
-  #stats-area {
-    background-color: white;
-    float: left;
-    height: 125px;
-    width: 200px;
-    margin: 10px;
-    padding: 10px;
-    font-size: 14px;
-    position: absolute;
-    left:50%;
-    bottom: 50%;
-  }
+  /*#stats-area {
+      }*/
   
   .stat-value {
     float: right;
