@@ -1,0 +1,59 @@
+html {
+    height: 100%;
+}
+body{
+    background-color: cyan;
+}
+.hidden{
+    display:none;
+}
+#home{
+    background-color: red;
+}
+#journey{
+    background-color:blue;
+}
+#event{
+    background-color:purple;
+}
+#progress-area{
+    position:relative;
+}
+#ocean{
+    width: 100%
+}
+#vikingship{
+    position:absolute;
+}
+#stats-area{
+    background-color:white;
+}
+.stat-value{
+    float:left;
+}
+#updates-area{
+    background-color:white;
+}
+.update-positive{
+    color: olivedrab;
+}
+.update-negative{
+    color: red;
+}
+.update-neutral{
+    color:grey;
+}
+#shop{
+    float:left
+}
+.products{
+    float:left;
+}
+
+#shopbutton{
+    clear:both;
+}
+#attack{
+    float:left;
+    background-color:white;
+}
