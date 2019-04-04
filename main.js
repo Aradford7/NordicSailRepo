@@ -1,0 +1,1 @@
+console.log("NordicSail JS running?")
