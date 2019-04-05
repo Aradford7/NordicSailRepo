@@ -23,42 +23,42 @@ Event.eventTypes = [
     notification: 'negative',
     stat: 'food',
     value: -10,
-    text: 'Fat Stoick eat all the raid provisions!. Food lost: '
+    text: 'Fat Stoick ate all the raid provisions! Food lost: '
   },
   {
     type: 'STAT-CHANGE',
     notification: 'negative',
     stat: 'gold',
     value: -50,
-    text: 'Another clan raids you! They steal '
+    text: 'Another clan raids you! They steal ' 
   },
   {
     type: 'STAT-CHANGE',
     notification: 'negative',
-    stat: 'NordicSs',
+    stat: 'ships',
     value: -1,
-    text: 'Your NordicSs were destroyed during battle. Casualties: '
+    text: 'Your ships were destroyed during battle. Casualties: '
   },
   {
     type: 'STAT-CHANGE',
     notification: 'positive',
     stat: 'food',
     value: 20,
-    text: 'Found a school of fish!. Food added: '
+    text: 'Found a school of fish! Food added: '
   },
   {
     type: 'STAT-CHANGE',
     notification: 'positive',
     stat: 'food',
     value: 20,
-    text: 'Raided a farmer!. Food added: '
+    text: 'Raided a farmer! Food added: '
   },
   {
     type: 'STAT-CHANGE',
     notification: 'positive',
     stat: 'ships',
     value: 1,
-    text: 'Found a new ally!. Gain NordicSs: '
+    text: 'Found a new ally! Gain ships: '
   },
   {
     type: 'SHOP',
@@ -210,7 +210,7 @@ NordicS.updateWeight = function(){
   var droppedWeapons = 0;
 
   //how much can the caravan carry
-  this.capacity = this.NordicSs * weightPerNordicS + this.clan* weightPerPerson;
+  this.capacity = this.ships * weightPerShip + this.clan* weightPerPerson;
 
   //how much weight do we currently have
   this.weight = this.food * foodWeight + this.ax * axWeight;
@@ -394,8 +394,8 @@ UI.raid = function(){
   if(damage < this.NordicS.clan) {
     this.NordicS.clan -= damage;
     this.NordicS.gold += spoils;
-    this.notify(damage + 'warriors are in Valhalla now...', 'negative');
-    this.notify('Found ' + spoils, 'worth of loot');
+    this.notify(damage + ' '+'warriors are in Valhalla now...', 'negative');
+    this.notify('Found ' + spoils + 'worth of loot');
   }
   else {
     this.NordicS.clan = 0;
@@ -417,7 +417,7 @@ UI.retreat = function(){
   //check there are survivors
   if(damage < this.NordicS.clan) {
     this.NordicS.clan -= damage;
-    this.notify(damage + ' clansmen were killed during the retreat!', 'negative');
+    this.notify(damage + '' + ' clansmen were killed during the retreat!', 'negative');
   }
   else {
     this.NordicS.clan = 0;
@@ -425,7 +425,7 @@ UI.retreat = function(){
   }
 
   //remove event listener
-  document.getElementById('retreat').removeEventListener('click');
+  document.getElementById('retreat').removeEventListener('click', UI.retreat);
 
   //resume journey
   document.getElementById('raid').classList.add('hidden');
@@ -436,12 +436,12 @@ UI.retreat = function(){
 
 
 //constants
-weightPerNordicS = 20;
+weightPerShip = 20;
 weightPerPerson = 2;
 foodWeight = 0.6;
 axWeight = 5;
 gameSpeed= 800;
-dayPerStep = 0.2;
+dayPerStep = 0.2; //0.2 for gameplay
 foodPerPerson= 0.02;
 fullSpeed = 5;
 slowSpeed = 3;
@@ -468,7 +468,7 @@ Game.init = function(){
     distance: 0,
     clan: 30,
     food: 80,
-    NordicS: 2,
+    ships: 2,
     gold: 300,
     ax: 2
   });

@@ -41,8 +41,14 @@ main{
   }
   
   #ocean {
-    width: 100%;
+    width: 46rem;
     image-rendering: pixelated;
+    height: 10rem;
+    margin-top: -3%;
+    margin-left: -4%;
+    border: 3px solid black;
+
+
   }
   
   #ship {
@@ -66,7 +72,7 @@ main{
   }
   
   #updates-area {
-    background-color: white;
+    background-color:none;
     width: 352px;
     margin: 10px;
     height: 108px;
@@ -80,20 +86,20 @@ main{
   
   
   .update-positive {
-    color: #669966;
+    color:limegreen;
   }
   
   .update-negative {
-    color: red;
+    color:darkred;
   }
   
   .update-neutral {
-    color: #90908F;
+    color:darkgrey;
   }
   
   #shop {
     float: left;
-    background-color:;
+    background-color:none;
     margin: 10px;
     padding: 10px;
     height: 90px;
@@ -131,20 +137,24 @@ main{
   }
 
 .row {
-    height: 7rem;
-    border: 1px solid black;
-    height:9rem;
-    width: 45rem;
+  height: 7rem;
+  border: 1px solid black;
+  height: 9rem;
+  width: 46rem;
+  /*background-color: rgb(118, 156, 222);*/
+  /*background-color:skyblue;*/
+  background-image: url('images/ocean_background.png');
+
 }
 
 
 .middle-col {
     width: 91%;
     height: 77%;
-    background-color: white;
+    background-color:none;
     margin: auto;
     margin-top: 1rem;
-    border: 1px solid black;
+   /* border: 1px solid black;*/
 }
 
 .bottom-row {
@@ -165,8 +175,9 @@ main{
 
 /*stat box*/
 div.stat{
-    border: none;
-    font-size: 10px;
+  border: none;
+  font-size: 10px;
+  width: 200px;
 }
 /*shop and raid box*/
 div.shop{
@@ -177,3 +188,9 @@ div#prods{
   border:none;
   font-size: 10px;
 }
+#vship{
+  position: absolute;
+  bottom: 30px;
+  left:0;
+}
+/* div#raid*/
