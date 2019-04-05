@@ -22,9 +22,13 @@ main{
   }
   
       
-  /*#journey {
+  #journey {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
-  */
+  
   #event {
     background-color: magenta;
   }
@@ -55,7 +59,6 @@ main{
     margin-top: 1%;
     display: flex;
     flex-direction: column;
-    margin-left: -52%;
   }
   
   .stat-value {
@@ -70,8 +73,8 @@ main{
     padding: 10px;
     font-size: 12px;
     overflow-y: scroll;
-    margin-top: -137px;
-    margin-left: 685px;
+    /* margin-top: -137px;
+    margin-left: 685px; */
    
   }
   
@@ -90,7 +93,7 @@ main{
   
   #shop {
     float: left;
-    background-color: white;
+    background-color:;
     margin: 10px;
     padding: 10px;
     height: 90px;
@@ -129,11 +132,9 @@ main{
 
 .row {
     height: 7rem;
-    background-color: purple;
     border: 1px solid black;
     height:9rem;
     width: 45rem;
-    margin: auto;
 }
 
 
@@ -147,9 +148,10 @@ main{
 }
 
 .bottom-row {
-    display: flex;
-    justify-content: space-evenly;
-    border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  border: 1px solid black;
+  align-items: center;
 }
 
 .bottom-row div {
@@ -165,4 +167,13 @@ main{
 div.stat{
     border: none;
     font-size: 10px;
+}
+/*shop and raid box*/
+div.shop{
+  border: none;
+  font-size: 10px;
+}
+div#prods{
+  border:none;
+  font-size: 10px;
 }

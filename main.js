@@ -35,9 +35,9 @@ Event.eventTypes = [
   {
     type: 'STAT-CHANGE',
     notification: 'negative',
-    stat: 'ships',
+    stat: 'NordicSs',
     value: -1,
-    text: 'Your ships were destroyed during battle. Casualties: '
+    text: 'Your NordicSs were destroyed during battle. Casualties: '
   },
   {
     type: 'STAT-CHANGE',
@@ -58,7 +58,7 @@ Event.eventTypes = [
     notification: 'positive',
     stat: 'ships',
     value: 1,
-    text: 'Found a new ally!. Gain ships: '
+    text: 'Found a new ally!. Gain NordicSs: '
   },
   {
     type: 'SHOP',
@@ -67,7 +67,7 @@ Event.eventTypes = [
     products: [
       {item: 'food', qty: 20, price: 50},
       {item: 'ships', qty: 1, price: 200},
-      {item: 'wp', qty: 2, price: 50},
+      {item: 'ax', qty: 2, price: 50},
       {item: 'clan', qty: 5, price: 80}
     ]
   },
@@ -78,7 +78,7 @@ Event.eventTypes = [
     products: [
       {item: 'food', qty: 30, price: 50},
       {item: 'ships', qty: 1, price: 200},
-      {item: 'wp', qty: 2, price: 20},
+      {item: 'ax', qty: 2, price: 20},
       {item: 'clan', qty: 10, price: 80}
     ]
   },
@@ -89,7 +89,7 @@ Event.eventTypes = [
     products: [
       {item: 'food', qty: 20, price: 60},
       {item: 'ships', qty: 1, price: 300},
-      {item: 'wp', qty: 2, price: 80},
+      {item: 'ax', qty: 2, price: 80},
       {item: 'clan', qty: 5, price: 60}
     ]
   },
@@ -141,14 +141,14 @@ Event.generateEvent = function(){
     this.ui.notify(eventData.text, eventData.notification);
 
     //prepare event
-    this.attackEvent(eventData);
+    this.raidEvent(eventData);
   }
 };
 
 Event.stateChangeEvent = function(eventData) {
   //can't have negative quantities
-  if(eventData.value + this.ship[eventData.stat] >= 0) {
-    this.ship[eventData.stat] += eventData.value;
+  if(eventData.value + this.NordicS[eventData.stat] >= 0) {
+    this.NordicS[eventData.stat] += eventData.value;
     this.ui.notify(eventData.text + Math.abs(eventData.value), eventData.notification);
   }
 };
@@ -182,44 +182,44 @@ Event.shopEvent = function(eventData) {
 
 //prepare an attack event
 Event.raidEvent = function(eventData){
-    var wp = Math.round((0.7 +0.6* Math*random())* enemyWeaponDmgAvg);
+    var ax = Math.round((0.7 +0.6* Math.random())* enemyWeaponDmgAvg);
     var spoils = Math.round((0.7+0.6 * Math.random())*enemyGoldAvg);
     
-    this.ui.showRaid(wp,spoils);
+    this.ui.showRaid(ax,spoils);
 };
 
-///////////SHIP/////////////////////////////////////////////////////////////////
+///////////NordicS/////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-Ship = {};
+NordicS = {};
 
-Ship.init = function(stats){
+NordicS.init = function(stats){
   this.day = stats.day;
   this.distance = stats.distance;
   this.clan = stats.clan;
   this.food = stats.food;
   this.ships = stats.ships;
   this.gold= stats.gold;
-  this.wp = stats.wp;
+  this.ax = stats.ax;
 };
 
 
 //update weight and capacity
-Ship.updateWeight = function(){
+NordicS.updateWeight = function(){
   var droppedFood = 0;
   var droppedWeapons = 0;
 
   //how much can the caravan carry
-  this.capacity = this.ships * weightPerShip + this.clan* weightPerPerson;
+  this.capacity = this.NordicSs * weightPerNordicS + this.clan* weightPerPerson;
 
   //how much weight do we currently have
-  this.weight = this.food * foodWeight + this.wp * wpWeight;
+  this.weight = this.food * foodWeight + this.ax * axWeight;
 
   //drop things behind if it's too much weight
   //assume guns get dropped before food
-  while(this.wp && this.capacity <= this.weight) {
-    this.wp--;
-    this.weight -= wpWeight;
+  while(this.ax && this.capacity <= this.weight) {
+    this.ax--;
+    this.weight -= axWeight;
     droppedWeapons++;
   }
 
@@ -239,7 +239,7 @@ Ship.updateWeight = function(){
 };
 
 //update covered distance
-Ship.updateDistance = function() {
+NordicS.updateDistance = function() {
   //the closer to capacity, the slower
   var diff = this.capacity - this.weight;
   var speed = slowSpeed + diff/this.capacity * fullSpeed;
@@ -247,7 +247,7 @@ Ship.updateDistance = function() {
 };
 
 //food consumption
-Ship.consumeFood = function() {
+NordicS.consumeFood = function() {
   this.food -= this.clan * foodPerPerson
 
   if(this.food < 0) {
@@ -261,23 +261,23 @@ UI = {};
 
 //show a notification in the message area
 UI.notify = function(message, type){
-  document.getElementById('updates-area').innerHTML = '<div class="update-' + type + '">Day '+ Math.ceil(this.ship.day) + ': ' + message+'</div>' + document.getElementById('updates-area').innerHTML;
+  document.getElementById('updates-area').innerHTML = '<div class="update-' + type + '">Day '+ Math.ceil(this.NordicS.day) + ': ' + message+'</div>' + document.getElementById('updates-area').innerHTML;
 };
 
 //refresh visual caravan stats
 UI.refreshStats = function() {
   //modify the dom
-  document.getElementById('stat-day').innerHTML = Math.ceil(this.ship.day);
-  document.getElementById('stat-distance').innerHTML = Math.floor(this.ship.distance);
-  document.getElementById('stat-clan').innerHTML = this.ship.clan;
-  document.getElementById('stat-ships').innerHTML = this.ship.ships;
-  document.getElementById('stat-food').innerHTML = Math.ceil(this.ship.food);
-  document.getElementById('stat-gold').innerHTML = this.ship.gold;
-  document.getElementById('stat-wp').innerHTML = this.ship.wp;
-  document.getElementById('stat-weight').innerHTML = Math.ceil(this.ship.weight) + '/' + this.ship.capacity;
+  document.getElementById('stat-day').innerHTML = Math.ceil(this.NordicS.day);
+  document.getElementById('stat-distance').innerHTML = Math.floor(this.NordicS.distance);
+  document.getElementById('stat-clan').innerHTML = this.NordicS.clan;
+  document.getElementById('stat-ships').innerHTML = this.NordicS.ships;
+  document.getElementById('stat-food').innerHTML = Math.ceil(this.NordicS.food);
+  document.getElementById('stat-gold').innerHTML = this.NordicS.gold;
+  document.getElementById('stat-ax').innerHTML = this.NordicS.ax;
+  document.getElementById('stat-weight').innerHTML = Math.ceil(this.NordicS.weight) + '/' + this.NordicS.capacity;
 
   //update caravan position
-  document.getElementById('vship').style.left = (380 * this.ship.distance/finalDistance) + 'px';
+  document.getElementById('vship').style.left = (380 * this.NordicS.distance/finalDistance) + 'px';
 };
 
 //show shop
@@ -303,7 +303,7 @@ UI.showShop = function(products){
       }
       else if(target.tagName == 'DIV' && target.className.match(/product/)) {
 
-        console.log('buying')
+        //console.log('buying')
 
         var bought = UI.buyProduct({
           item: target.getAttribute('data-item'),
@@ -336,19 +336,19 @@ UI.showShop = function(products){
 //buy product
 UI.buyProduct = function(product) {
   //check we can afford it
-  if(product.price > UI.ship.gold) {
+  if(product.price > UI.NordicS.gold) {
     UI.notify('Not enough gold!', 'negative');
     return false;
   }
 
-  UI.ship.gold -= product.price;
+  UI.NordicS.gold -= product.price;
 
-  UI.ship[product.item] += +product.qty;
+  UI.NordicS[product.item] += +product.qty;
 
   UI.notify('Bought ' + product.qty + ' x ' + product.item, 'positive');
 
   //update weight
-  UI.ship.updateWeight();
+  UI.NordicS.updateWeight();
 
   //update visuals
   UI.refreshStats();
@@ -358,16 +358,16 @@ UI.buyProduct = function(product) {
 };
 
 //show attack
-UI.showRaid = function(wp, spoils) {
+UI.showRaid = function(ax, spoils) {
   var raidDiv = document.getElementById('raid');
   raidDiv.classList.remove('hidden');
 
   //keep properties
-  this.wp = wp;
+  this.ax = ax;
   this.spoils = spoils;
 
   //show firepower
-  document.getElementById('attack-description').innerHTML = 'Weapon Damage: ' + firepower;
+  document.getElementById('attack-description').innerHTML = 'Weapon Damage: ' + ax;
 
   //init once
   if(!this.raidInitiated) {
@@ -385,20 +385,20 @@ UI.showRaid = function(wp, spoils) {
 //RAID
 UI.raid = function(){
 
-  var wp = this.wp;
+  var ax = this.ax;
   var spoils = this.spoils;
 
-  var damage = Math.ceil(Math.max(0, wp * 2 * Math.random() - this.ship.wp));
+  var damage = Math.ceil(Math.max(0, ax * 2 * Math.random() - this.NordicS.ax));
 
   //check there are survivors
-  if(damage < this.ship.clan) {
-    this.ship.clan -= damage;
-    this.ship.gold += spoils;
+  if(damage < this.NordicS.clan) {
+    this.NordicS.clan -= damage;
+    this.NordicS.gold += spoils;
     this.notify(damage + 'warriors are in Valhalla now...', 'negative');
     this.notify('Found ' + spoils, 'worth of loot');
   }
   else {
-    this.ship.clan = 0;
+    this.NordicS.clan = 0;
     this.notify('You have fallen in battle! Your clan has reach Valhalla!', 'negative');
   }
 
@@ -410,17 +410,17 @@ UI.raid = function(){
 //runing away from enemy
 UI.retreat = function(){
 
-  var wp = this.wp;
+  var ax = this.ax;
 
-  var damage = Math.ceil(Math.max(0, wp * Math.random()/2));
+  var damage = Math.ceil(Math.max(0, ax * Math.random()/2));
 
   //check there are survivors
-  if(damage < this.ship.clan) {
-    this.ship.clan -= damage;
+  if(damage < this.NordicS.clan) {
+    this.NordicS.clan -= damage;
     this.notify(damage + ' clansmen were killed during the retreat!', 'negative');
   }
   else {
-    this.ship.clan = 0;
+    this.NordicS.clan = 0;
     this.notify('Everyone died during the retreat,', 'negative');
   }
 
@@ -436,10 +436,10 @@ UI.retreat = function(){
 
 
 //constants
-weightPerShip = 20;
+weightPerNordicS = 20;
 weightPerPerson = 2;
 foodWeight = 0.6;
-wpWeight = 5;
+axWeight = 5;
 gameSpeed= 800;
 dayPerStep = 0.2;
 foodPerPerson= 0.02;
@@ -462,27 +462,27 @@ Game.init = function(){
   this.eventManager = Event;
 
   //setup caravan
-  this.ship = Ship;
-  this.ship.init({
+  this.NordicS = NordicS;
+  this.NordicS.init({
     day: 0,
     distance: 0,
     clan: 30,
     food: 80,
-    ship: 2,
+    NordicS: 2,
     gold: 300,
-    wp: 2
+    ax: 2
   });
 
   //pass references
-  this.ship.ui = this.ui;
-  this.ship.eventManager = this.eventManager;
+  this.NordicS.ui = this.ui;
+  this.NordicS.eventManager = this.eventManager;
 
   this.ui.game = this;
-  this.ui.ship = this.ship;
+  this.ui.NordicS = this.NordicS;
   this.ui.eventManager = this.eventManager;
 
   this.eventManager.game = this;
-  this.eventManager.ship = this.ship;
+  this.eventManager.NordicS = this.NordicS;
   this.eventManager.ui = this.ui;
 
   //begin adventure!
@@ -523,36 +523,36 @@ Game.step = function(timestamp) {
 //update game stats
 Game.updateGame = function() {
   //day update
-  this.ship.day += dayPerStep;
+  this.NordicS.day += dayPerStep;
 
   //food consumption
-  this.ship.consumeFood();
+  this.NordicS.consumeFood();
 
-  if(this.ship.food === 0) {
+  if(this.NordicS.food === 0) {
     this.ui.notify('Your clan starved to death!', 'negative');
     this.gameActive = false;
     return;
   }
 
   //update weight
-  this.ship.updateWeight();
+  this.NordicS.updateWeight();
 
   //update progress
-  this.ship.updateDistance();
+  this.NordicS.updateDistance();
 
   //show stats
   this.ui.refreshStats();
 
   //check if everyone died
-  if(this.ship.clan <= 0) {
-    this.ship.clan = 0;
+  if(this.NordicS.clan <= 0) {
+    this.NordicS.clan = 0;
     this.ui.notify('Your clan has fallen! Everyone is dead', 'negative');
     this.gameActive = false;
     return;
   }
 
   //check win game
-  if(this.ship.distance >= finalDistance) {
+  if(this.NordicS.distance >= finalDistance) {
     this.ui.notify('Bless Odin! You have returned home! Celebrate your victory!', 'positive');
     this.gameActive = false;
     return;
