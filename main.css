@@ -36,12 +36,12 @@ main{
     margin: 10px;
   }
   
-  #trees {
+  #ocean {
     width: 100%;
     image-rendering: pixelated;
   }
   
-  #caravan {
+  #ship {
     position: absolute;
     bottom: 30px;
     left: 0;
@@ -72,6 +72,7 @@ main{
     overflow-y: scroll;
     margin-top: -137px;
     margin-left: 685px;
+   
   }
   
   
@@ -110,7 +111,7 @@ main{
     margin: 5px;
   }
   
-  #attack {
+  #raid {
     float: left;
     background-color: white;
     margin: 10px;
