@@ -35,7 +35,7 @@ Event.eventTypes = [
   {
     type: 'STAT-CHANGE',
     notification: 'negative',
-    stat: 'ship',
+    stat: 'ships',
     value: -1,
     text: 'Your ships were destroyed during battle. Casualties: '
   },
@@ -56,7 +56,7 @@ Event.eventTypes = [
   {
     type: 'STAT-CHANGE',
     notification: 'positive',
-    stat: 'ship',
+    stat: 'ships',
     value: 1,
     text: 'Found a new ally!. Gain ships: '
   },
@@ -66,7 +66,7 @@ Event.eventTypes = [
     text: 'You have found a merchant!',
     products: [
       {item: 'food', qty: 20, price: 50},
-      {item: 'ship', qty: 1, price: 200},
+      {item: 'ships', qty: 1, price: 200},
       {item: 'wp', qty: 2, price: 50},
       {item: 'clan', qty: 5, price: 80}
     ]
@@ -77,7 +77,7 @@ Event.eventTypes = [
     text: 'You have found an ally merchant',
     products: [
       {item: 'food', qty: 30, price: 50},
-      {item: 'ship', qty: 1, price: 200},
+      {item: 'ships', qty: 1, price: 200},
       {item: 'wp', qty: 2, price: 20},
       {item: 'clan', qty: 10, price: 80}
     ]
@@ -88,7 +88,7 @@ Event.eventTypes = [
     text: 'Stumble upon a viking village selling various goods!',
     products: [
       {item: 'food', qty: 20, price: 60},
-      {item: 'ship', qty: 1, price: 300},
+      {item: 'ships', qty: 1, price: 300},
       {item: 'wp', qty: 2, price: 80},
       {item: 'clan', qty: 5, price: 60}
     ]
@@ -188,7 +188,8 @@ Event.raidEvent = function(eventData){
     this.ui.showRaid(wp,spoils);
 };
 
-///////////SHIP/////////////
+///////////SHIP/////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 Ship = {};
 
@@ -197,7 +198,7 @@ Ship.init = function(stats){
   this.distance = stats.distance;
   this.clan = stats.clan;
   this.food = stats.food;
-  this.ship = stats.oxen;
+  this.ships = stats.ships;
   this.gold= stats.gold;
   this.wp = stats.wp;
 };
@@ -209,7 +210,7 @@ Ship.updateWeight = function(){
   var droppedWeapons = 0;
 
   //how much can the caravan carry
-  this.capacity = this.ship * weightPerShip + this.clan* weightPerPerson;
+  this.capacity = this.ships * weightPerShip + this.clan* weightPerPerson;
 
   //how much weight do we currently have
   this.weight = this.food * foodWeight + this.wp * wpWeight;
@@ -238,45 +239,45 @@ Ship.updateWeight = function(){
 };
 
 //update covered distance
-Caravan.updateDistance = function() {
+Ship.updateDistance = function() {
   //the closer to capacity, the slower
   var diff = this.capacity - this.weight;
-  var speed = SLOW_SPEED + diff/this.capacity * FULL_SPEED;
+  var speed = slowSpeed + diff/this.capacity * fullSpeed;
   this.distance += speed;
 };
 
 //food consumption
-Caravan.consumeFood = function() {
-  this.food -= this.crew * FOOD_PER_PERSON;
+Ship.consumeFood = function() {
+  this.food -= this.clan * foodPerPerson
 
   if(this.food < 0) {
     this.food = 0;
   }
 };
 
-
+//////////UI/////////////////////////////////////////
 
 UI = {};
 
 //show a notification in the message area
 UI.notify = function(message, type){
-  document.getElementById('updates-area').innerHTML = '<div class="update-' + type + '">Day '+ Math.ceil(this.caravan.day) + ': ' + message+'</div>' + document.getElementById('updates-area').innerHTML;
+  document.getElementById('updates-area').innerHTML = '<div class="update-' + type + '">Day '+ Math.ceil(this.ship.day) + ': ' + message+'</div>' + document.getElementById('updates-area').innerHTML;
 };
 
 //refresh visual caravan stats
 UI.refreshStats = function() {
   //modify the dom
-  document.getElementById('stat-day').innerHTML = Math.ceil(this.caravan.day);
-  document.getElementById('stat-distance').innerHTML = Math.floor(this.caravan.distance);
-  document.getElementById('stat-crew').innerHTML = this.caravan.crew;
-  document.getElementById('stat-oxen').innerHTML = this.caravan.oxen;
-  document.getElementById('stat-food').innerHTML = Math.ceil(this.caravan.food);
-  document.getElementById('stat-money').innerHTML = this.caravan.money;
-  document.getElementById('stat-firepower').innerHTML = this.caravan.firepower;
-  document.getElementById('stat-weight').innerHTML = Math.ceil(this.caravan.weight) + '/' + this.caravan.capacity;
+  document.getElementById('stat-day').innerHTML = Math.ceil(this.ship.day);
+  document.getElementById('stat-distance').innerHTML = Math.floor(this.ship.distance);
+  document.getElementById('stat-clan').innerHTML = this.ship.clan;
+  document.getElementById('stat-ships').innerHTML = this.ship.ships;
+  document.getElementById('stat-food').innerHTML = Math.ceil(this.ship.food);
+  document.getElementById('stat-gold').innerHTML = this.ship.gold;
+  document.getElementById('stat-wp').innerHTML = this.ship.wp;
+  document.getElementById('stat-weight').innerHTML = Math.ceil(this.ship.weight) + '/' + this.ship.capacity;
 
   //update caravan position
-  document.getElementById('caravan').style.left = (380 * this.caravan.distance/FINAL_DISTANCE) + 'px';
+  document.getElementById('vship').style.left = (380 * this.ship.distance/finalDistance) + 'px';
 };
 
 //show shop
@@ -335,19 +336,19 @@ UI.showShop = function(products){
 //buy product
 UI.buyProduct = function(product) {
   //check we can afford it
-  if(product.price > UI.caravan.money) {
-    UI.notify('Not enough money', 'negative');
+  if(product.price > UI.ship.gold) {
+    UI.notify('Not enough gold!', 'negative');
     return false;
   }
 
-  UI.caravan.money -= product.price;
+  UI.ship.gold -= product.price;
 
-  UI.caravan[product.item] += +product.qty;
+  UI.ship[product.item] += +product.qty;
 
   UI.notify('Bought ' + product.qty + ' x ' + product.item, 'positive');
 
   //update weight
-  UI.caravan.updateWeight();
+  UI.ship.updateWeight();
 
   //update visuals
   UI.refreshStats();
@@ -357,77 +358,77 @@ UI.buyProduct = function(product) {
 };
 
 //show attack
-UI.showAttack = function(firepower, gold) {
-  var attackDiv = document.getElementById('attack');
-  attackDiv.classList.remove('hidden');
+UI.showRaid = function(wp, spoils) {
+  var raidDiv = document.getElementById('raid');
+  raidDiv.classList.remove('hidden');
 
   //keep properties
-  this.firepower = firepower;
-  this.gold = gold;
+  this.wp = wp;
+  this.spoils = spoils;
 
   //show firepower
-  document.getElementById('attack-description').innerHTML = 'Firepower: ' + firepower;
+  document.getElementById('attack-description').innerHTML = 'Weapon Damage: ' + firepower;
 
   //init once
-  if(!this.attackInitiated) {
+  if(!this.raidInitiated) {
 
     //fight
-    document.getElementById('fight').addEventListener('click', this.fight.bind(this));
+    document.getElementById('raid').addEventListener('click', this.raid.bind(this));
 
     //run away
-    document.getElementById('runaway').addEventListener('click', this.runaway.bind(this));
+    document.getElementById('retreat').addEventListener('click', this.retreat.bind(this));
 
     this.attackInitiated = true;
   }
 };
 
-//fight
-UI.fight = function(){
+//RAID
+UI.raid = function(){
 
-  var firepower = this.firepower;
-  var gold = this.gold;
+  var wp = this.wp;
+  var spoils = this.spoils;
 
-  var damage = Math.ceil(Math.max(0, firepower * 2 * Math.random() - this.caravan.firepower));
+  var damage = Math.ceil(Math.max(0, wp * 2 * Math.random() - this.ship.wp));
 
   //check there are survivors
-  if(damage < this.caravan.crew) {
-    this.caravan.crew -= damage;
-    this.caravan.money += gold;
-    this.notify(damage + ' people were killed fighting', 'negative');
-    this.notify('Found $' + gold, 'gold');
+  if(damage < this.ship.clan) {
+    this.ship.clan -= damage;
+    this.ship.gold += spoils;
+    this.notify(damage + 'warriors are in Valhalla now...', 'negative');
+    this.notify('Found ' + spoils, 'worth of loot');
   }
   else {
-    this.caravan.crew = 0;
-    this.notify('Everybody died in the fight', 'negative');
+    this.ship.clan = 0;
+    this.notify('You have fallen in battle! Your clan has reach Valhalla!', 'negative');
   }
 
   //resume journey
-  document.getElementById('attack').classList.add('hidden');
+  document.getElementById('raid').classList.add('hidden');
   this.game.resumeJourney();
 };
 
 //runing away from enemy
-UI.runaway = function(){
+UI.retreat = function(){
 
-  var firepower = this.firepower;
+  var wp = this.wp;
 
-  var damage = Math.ceil(Math.max(0, firepower * Math.random()/2));
+  var damage = Math.ceil(Math.max(0, wp * Math.random()/2));
 
   //check there are survivors
-  if(damage < this.caravan.crew) {
-    this.caravan.crew -= damage;
-    this.notify(damage + ' people were killed running', 'negative');
+  if(damage < this.ship.clan) {
+    this.ship.clan -= damage;
+    this.notify(damage + ' clansmen were killed during the retreat!', 'negative');
   }
   else {
-    this.caravan.crew = 0;
-    this.notify('Everybody died running away', 'negative');
+    this.ship.clan = 0;
+    this.notify('Everyone died during the retreat,', 'negative');
   }
 
   //remove event listener
-  document.getElementById('runaway').removeEventListener('click');
+  document.getElementById('retreat').removeEventListener('click');
 
   //resume journey
-  document.getElementById('attack').classList.add('hidden');
+  document.getElementById('raid').classList.add('hidden');
   this.game.resumeJourney();
 
 };
@@ -435,19 +436,19 @@ UI.runaway = function(){
 
 
 //constants
-WEIGHT_PER_OX = 20;
-WEIGHT_PER_PERSON = 2;
-FOOD_WEIGHT = 0.6;
-FIREPOWER_WEIGHT = 5;
-GAME_SPEED = 800;
-DAY_PER_STEP = 0.2;
-FOOD_PER_PERSON = 0.02;
-FULL_SPEED = 5;
-SLOW_SPEED = 3;
-FINAL_DISTANCE = 1000;
-EVENT_PROBABILITY = 0.15;
-ENEMY_FIREPOWER_AVG = 5;
-ENEMY_GOLD_AVG = 50;
+weightPerShip = 20;
+weightPerPerson = 2;
+foodWeight = 0.6;
+wpWeight = 5;
+gameSpeed= 800;
+dayPerStep = 0.2;
+foodPerPerson= 0.02;
+fullSpeed = 5;
+slowSpeed = 3;
+finalDistance = 1000;
+eventProbability = 0.15;
+enemyWeaponDmgAvg = 5;
+enemyGoldAvg = 50;
 
 Game = {};
 
@@ -461,27 +462,27 @@ Game.init = function(){
   this.eventManager = Event;
 
   //setup caravan
-  this.caravan = Caravan;
-  this.caravan.init({
+  this.ship = Ship;
+  this.ship.init({
     day: 0,
     distance: 0,
-    crew: 30,
+    clan: 30,
     food: 80,
-    oxen: 2,
-    money: 300,
-    firepower: 2
+    ship: 2,
+    gold: 300,
+    wp: 2
   });
 
   //pass references
-  this.caravan.ui = this.ui;
-  this.caravan.eventManager = this.eventManager;
+  this.ship.ui = this.ui;
+  this.ship.eventManager = this.eventManager;
 
   this.ui.game = this;
-  this.ui.caravan = this.caravan;
+  this.ui.ship = this.ship;
   this.ui.eventManager = this.eventManager;
 
   this.eventManager.game = this;
-  this.eventManager.caravan = this.caravan;
+  this.eventManager.ship = this.ship;
   this.eventManager.ui = this.ui;
 
   //begin adventure!
@@ -492,7 +493,7 @@ Game.init = function(){
 Game.startJourney = function() {
   this.gameActive = true;
   this.previousTime = null;
-  this.ui.notify('A great adventure begins', 'positive');
+  this.ui.notify('Sail And Pillage The West', 'positive');
 
   this.step();
 };
@@ -510,7 +511,7 @@ Game.step = function(timestamp) {
   var progress = timestamp - this.previousTime;
 
   //game update
-  if(progress >= GAME_SPEED) {
+  if(progress >= gameSpeed) {
     this.previousTime = timestamp;
     this.updateGame();
   }
@@ -522,43 +523,43 @@ Game.step = function(timestamp) {
 //update game stats
 Game.updateGame = function() {
   //day update
-  this.caravan.day += DAY_PER_STEP;
+  this.ship.day += dayPerStep;
 
   //food consumption
-  this.caravan.consumeFood();
+  this.ship.consumeFood();
 
-  if(this.caravan.food === 0) {
-    this.ui.notify('Your caravan starved to death', 'negative');
+  if(this.ship.food === 0) {
+    this.ui.notify('Your clan starved to death!', 'negative');
     this.gameActive = false;
     return;
   }
 
   //update weight
-  this.caravan.updateWeight();
+  this.ship.updateWeight();
 
   //update progress
-  this.caravan.updateDistance();
+  this.ship.updateDistance();
 
   //show stats
   this.ui.refreshStats();
 
   //check if everyone died
-  if(this.caravan.crew <= 0) {
-    this.caravan.crew = 0;
-    this.ui.notify('Everyone died', 'negative');
+  if(this.ship.clan <= 0) {
+    this.ship.clan = 0;
+    this.ui.notify('Your clan has fallen! Everyone is dead', 'negative');
     this.gameActive = false;
     return;
   }
 
   //check win game
-  if(this.caravan.distance >= FINAL_DISTANCE) {
-    this.ui.notify('You have returned home!', 'positive');
+  if(this.ship.distance >= finalDistance) {
+    this.ui.notify('Bless Odin! You have returned home! Celebrate your victory!', 'positive');
     this.gameActive = false;
     return;
   }
 
   //random events
-  if(Math.random() <= EVENT_PROBABILITY) {
+  if(Math.random() <= eventProbability) {
     this.eventManager.generateEvent();
   }
 };
