@@ -60,8 +60,8 @@ main{
   #stats-area {
     width: 42%;
     height: 89%;
-    border: 1px solid black;
-    background-color: blue;
+   /* border: 1px solid black;*/
+    background-color:none;
     margin-top: 1%;
     display: flex;
     flex-direction: column;
@@ -87,31 +87,36 @@ main{
   
   .update-positive {
     color:limegreen;
+   
   }
   
   .update-negative {
     color:darkred;
+  
   }
   
   .update-neutral {
     color:darkgrey;
+    
   }
   
   #shop {
-    float: left;
-    background-color:none;
+   
+    background-color:white;
     margin: 10px;
     padding: 10px;
     height: 90px;
     width: 350px;
+    display:flex;
+    
   }
   
   .product {
     float: left;
     margin: 5px;
     padding: 2px;
-    border: 1px solid black;
-    font-size: 12px;
+    /*border: 1px solid black;*/
+    font-size: 10px;
   }
   
   #shop button {
@@ -138,12 +143,12 @@ main{
 
 .row {
   height: 7rem;
-  border: 1px solid black;
+  border: 3px solid black;
   height: 9rem;
   width: 46rem;
-  /*background-color: rgb(118, 156, 222);*/
+  background-color: rgb(99, 126, 177);
   /*background-color:skyblue;*/
-  background-image: url('images/ocean_background.png');
+  /*background-image: url('images/ocean_background.png');*/
 
 }
 
@@ -167,9 +172,10 @@ main{
 .bottom-row div {
     width: 46%;
     height: 80%;
-    border: 1px solid black;
-    background-color: blue;
+    border: 3px solid black;
+    background-color:none;
     margin-top: 1%;
+    font-display: white;
  
 }
 
@@ -178,6 +184,7 @@ div.stat{
   border: none;
   font-size: 10px;
   width: 200px;
+  float: right;
 }
 /*shop and raid box*/
 div.shop{
@@ -194,3 +201,15 @@ div#prods{
   left:0;
 }
 /* div#raid*/
+
+div#stats-area{
+  background-color: none;
+  
+}
+
+.updated-area{
+  display:flex;
+  overflow:scroll;
+  flex-direction: row;
+}
+
