@@ -34,6 +34,13 @@ Event.eventTypes = [
   },
   {
     type: 'STAT-CHANGE',
+    notification: 'positive',
+    stat: 'gold',
+    value: +50,
+    text: 'You took down an rival chief! Gain  ' 
+  },
+  {
+    type: 'STAT-CHANGE',
     notification: 'negative',
     stat: 'ships',
     value: -1,
@@ -57,8 +64,15 @@ Event.eventTypes = [
     type: 'STAT-CHANGE',
     notification: 'positive',
     stat: 'ships',
-    value: 1,
+    value: 3,
     text: 'Found a new ally! Gain ships: '
+  },
+  {
+    type: 'STAT-CHANGE',
+    notification: 'positive',
+    stat: 'clan',
+    value: 3,
+    text: 'Saved a viking village! Gain clansmen: '
   },
   {
     type: 'SHOP',
@@ -330,7 +344,7 @@ UI.showShop = function(products){
   }
 
   //setup click event
-  //document.getElementsByClassName('product').addEventListener(UI.buyProduct);
+  document.getElementsByClassName('product').addEventListener(UI.buyProduct);
 };
 
 //buy product
