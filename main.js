@@ -18,9 +18,10 @@ NordicS.enemyGoldAvg = 50;
 
 NordicS.Game = {};
 NordicS.UI = {};
+NordicS.Ship = {};
 /*----- app's state (variables) -----*/ 
 //initate the game
-//NordicS.Game.init();
+NordicS.Game.init();
 NordicS.Game.init = function(){
     //reference ui
     this.ui = NordicS.UI;
@@ -234,12 +235,118 @@ NordicS.UI.buyProduct = function(product){
 
 };
 
-//show attack
-NordicS.UI.showAttack = function(weapon,gold){
-    var attackDiv = document.getElementById('attack');
+//show Raid
+NordicS.UI.showRaid = function(wp,spoils){
+    var raidDiv = document.getElementById('raid');
     attackDiv.classList.remove('hidden');
 
     //keep properties
-    this.weapon = weapon;
-    this. spoils = this. spoils
-}
+    this.wp = wp;
+    this.spoils = this.spoils;
+
+    //show weapon
+    document.getElementById('attack-description').innerHTML = 'Weapon: ' + wp;
+
+    //init once
+    if(!this.raidInitiated){
+
+        //raid
+        document.getElementById('raid'). addEventListener('click', this.raid.bind(this));
+
+        //retreat
+        document.getElementById('retreat').addEventListener('click', this.runaway.bind(this));
+        
+        this.attackInitiated = true;
+    }
+};
+
+
+    //Raid
+NordicS.UI.raid = function(){
+
+    var wp = this. wp;
+    var spoils = this.spoils;
+
+    var damage = Math.ceil(Max.max(0, firepower * 2 * Math.random()-this.ship.weapon));
+
+    //check there are survivors
+    if(damage <this.ship.clan){
+        this.ship.clan -= damage;
+        this.ship.gold += spoils;
+        this.notifiy(damage + ' warriors are in Vahalla now....', 'negative');
+        this.notify('Found'+spoils+'worth of loot');
+    }
+    else{
+        this.ship.clan = 0;
+        this.notify('You have fallen in battle! Your clan has reach Valhalla!', 'negative');
+    }
+    //resume journey
+    document.getElementById('attack').classList.add('hidden');
+    this.game.resumeJourney();
+};
+
+//running away from enemy
+NordicS.UI.retreat = function (){
+    var wp = this.wp;
+
+    var damage = Math.ceil(Math.max(0, weapon * Math.random()/2));
+
+    //check for survivors
+    if(damage < this.ship.clan){
+        this.ship.clan -= wp;
+        this.notify(damage + 'clansmen were killed during the retreat', 'negative');
+    }
+    else {
+        this.ship.clan = 0;
+        this.notify('Everyone died during the retreat','negative');
+    }
+    //remove event listener
+    document.getElementById('retreat').removeEventListener('click',);
+    //resume journey
+    document.getElementById('raid').classList.add('hidden');
+    this.game.resumeJourney();
+};
+
+//ship
+//var NordicS = NordicS || {};
+//NordicS.Ship = {};
+
+NordicS.Ship.init = function(stats){
+    this.day = stats.day;
+    this.distance = stats.distance;
+    this.clan = stats.clan;
+    this.food = stats.food;
+    this.ship = stats.ship;
+    this.gold = stats.gold;
+    this.wp = stats.wp;
+};
+    //update weight and capacity
+    NordicS.Ship.updateWeight = function (){
+        var droppedFood = 0;
+        var droppedWeapons = 0;
+
+        //how much can the ship carry
+        this.capacity = this.clan * NordicS.weightPerPerson + this.clan * NordicS.weightPerOx +this.ship;
+
+        //how much weight currently
+        this.weight = this.food * NordicS.foodWeight + this.wp * NordicS.wpWeight;
+
+        //drop things behind if it's too much weight
+        //assume guns get dropped before food
+        while(this.wp && this.capacity <= this.weight){
+            this.wp --;
+            this.weight -= NordicS.wpWeight;
+            droppedWeapons++;
+        }
+        if(droppedWeapons){
+            this.ui.notify('Left'+droppedWeapons+'axes behind', 'negative');
+        }
+        while(this.food && this.capacity <= this.weight){
+            this.food--;
+            this.weight -= NordicS.foodWeight;
+            droppedFood++;
+        }
+        if(droppedFood){
+            this.ui.notifiy('Left' + droppedFood+ 'food provisions behind', 'negative');
+        }
+    };
