@@ -19,6 +19,7 @@ NordicS.enemyGoldAvg = 50;
 NordicS.Game = {};
 NordicS.UI = {};
 NordicS.Ship = {};
+NordicS.Event = {};
 /*----- app's state (variables) -----*/ 
 //initate the game
 NordicS.Game.init();
@@ -350,3 +351,193 @@ NordicS.Ship.init = function(stats){
             this.ui.notifiy('Left' + droppedFood+ 'food provisions behind', 'negative');
         }
     };
+
+    //update covered distance
+    NordicS.Ship.updateDistance = function (){
+        //the closer to capacity, the slower
+        var diff = this.capacity - this.weight;
+        var speed = NordicS.slowSpeed + diff/this.capacity * NordicS.fullSpeed;
+        this.distance += speed;
+    };
+
+    //food consumption
+    NordicS.Ship.consumeFood = function (){
+        this.food -= this.clan * NordicS.foodPerPerson;
+
+        if(this.food <0){
+            this.food = 0;
+        }
+    };
+
+    //event
+     NordicS.Event.eventTypes = [
+         {
+             type:'STAT-CHANGE',
+             notification: 'negative',
+             stat: 'clan',
+             value: -3,
+             text: 'Alcohol intoxication. Casaulties: '
+         },
+         {
+            type:'STAT-CHANGE',
+            notification: 'negative',
+            stat: 'clan',
+            value: -4,
+            text: 'Rebellion!. Casaulties: '
+         },
+         {
+            type: 'STAT-CHANGE',
+            notification: 'negative',
+            stat: 'food',
+            value: -10,
+            text: 'Fat Stoick eat raid the provisions! Food lost: '
+         },
+         {
+            type: 'STAT-CHANGE',
+            notification: 'negative',
+            stat: 'gold',
+            value: -50,
+            text: 'Another clan raids you! They steal '
+         },
+         {
+            type: 'STAT-CHANGE',
+            notification: 'negative',
+            stat: 'ship',
+            value: -1,
+            text: 'Ships destoryed during battle. Casualties: '
+         },
+         {
+            type: 'STAT-CHANGE',
+            notification: 'positive',
+            stat: 'food',
+            value: 20,
+            text: 'Found school of fish! Food added: '
+         },
+         {
+            type: 'STAT-CHANGE',
+            notification: 'positive',
+            stat: 'ship',
+            value: 1,
+            text: 'Found a new ally! Gain ships: '
+         },
+         {
+           
+            type: 'SHOP',
+             notification: 'neutral',
+             text: 'You have found a merchant!',
+            products: [
+             {item: 'food', qty: 20, price: 50},
+             {item: 'ship', qty: 1, price: 200},
+             {item: 'wp', qty: 2, price: 50},
+             {item: 'clan ', qty: 5, price: 80}
+            ]  
+         },
+         {
+            type: 'SHOP',
+            notification: 'neutral',
+            text: 'You have found an ally merchant',
+            products: [
+              {item: 'food', qty: 30, price: 50},
+              {item: 'ship', qty: 1, price: 200},
+              {item: 'wp', qty: 2, price: 20},
+              {item: 'clan', qty: 10, price: 80}
+            ]  
+         },
+         {
+            type: 'SHOP',
+            notification: 'neutral',
+            text: 'Viking village sell various goods',
+            products: [
+              {item: 'food', qty: 20, price: 60},
+              {item: 'ship', qty: 1, price: 300},
+              {item: 'wp', qty: 2, price: 80},
+              {item: 'clan', qty: 5, price: 60}
+            ]
+         },
+         {
+            type: 'RAID',
+            notification: 'negative',
+            text: 'Villagers are attacking you'
+         },
+         {
+            type: 'RAID',
+            notification: 'negative',
+            text: 'Villagers are attacking you'
+         },
+         {
+            type: 'RAID',
+            notification: 'negative',
+            text: 'Rival vikings are attacking you' 
+         }
+
+     ];
+
+     NordicS.Event.generateEvent = function (){
+         //pick random one
+         var eventIndex = Math.floor(Math.random() * this.eventTypes.length);
+         var eventData = this.eventTypes[eventIndex];
+
+         //events that consist in updating a stat
+         if(eventData.type == 'STAT-CHANGE'){
+             this.stateChangeEvent (eventData);
+         }
+
+         //shops
+         else if (eventData.type == 'SHOP'){
+             //pause game
+             this.game.pauseJourney();
+             //notify user
+             this.ui.notify(eventData.text, eventData.notification);
+             //prepare event
+             this.shopEvent(eventData);
+         }
+
+         //attacks
+         else if(eventData.type == 'RAID'){
+             //pause game
+             this.game.pauseJourney();
+             //notify user
+             this.ui.notify(eventData.text, eventData.notification);
+             //prepare event
+             this.shop(eventData);
+         }
+     };
+
+     NordicS.Event.stateChange = function(eventData){
+         //cant have negative qualities
+         if(eventData.value + this.ship[eventData.stat] >=0) {
+             this.ship[eventData.stat] += eventData.value;
+             this.ui.notify(eventData.text + Math.abs(eventData.value), eventData.notification);
+         }
+     };
+     NordicS.Event.shopEvent = function(eventData){
+         //number of product for sale
+         var numProds = Math.ceil(Math.random()*4);
+
+         //product list
+         var products = [];
+         var j, priceFactor;
+
+         for(var i = 0; i <numProds; i++){
+             //random product
+             j = Math.floor(Math.random()* eventData.products.length);
+             //multiply price by random factor +- 30%
+             priceFactor = 0.7 +0.6 * Math.random ();
+
+             products.push({
+                 item:eventData.products[j].item,
+                 qty:eventData.products[j].qty,
+                 price:Math.round(eventData.products[j].price *priceFactor)
+             });
+         }
+         this.ui.showShop(products);
+     };
+
+     //prepare an raid event
+     NordicS.Event.raidEvent = function(eventData){
+         var wp = Math.round((0.7 +0.6* Math*random())* NordicS.enemyWeaponDmgAvg);
+         var spoils = Math.round((0.7+0.6 * Math.random())*NordicS.enemyGoldAvg);
+         
+         this.ui.showRaid(wp,spoils);
+};
+    

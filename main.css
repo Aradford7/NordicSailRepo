@@ -64,16 +64,16 @@ main{
   
   #updates-area {
     background-color: white;
-    float: left;
-    width: 328px;
+    width: 352px;
     margin: 10px;
     height: 108px;
     padding: 10px;
     font-size: 12px;
     overflow-y: scroll;
-    margin-top: -16%;
-    margin-left: 50%;
+    margin-top: -137px;
+    margin-left: 685px;
   }
+  
   
   .update-positive {
     color: #669966;
