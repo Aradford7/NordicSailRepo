@@ -344,7 +344,7 @@ UI.showShop = function(products){
   }
 
   //setup click event
-  document.getElementsByClassName('product').addEventListener(UI.buyProduct);
+  //document.getElementsByClassName('product').addEventListener(UI.buyProduct);
 };
 
 //buy product
