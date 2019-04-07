@@ -16,7 +16,7 @@ Event.eventTypes = [
     notification: 'negative',
     stat: 'clan',
     value: -4,
-    text: 'Rebellion!. Casualties: '
+    text: 'Rebellion! Casualties: '
   },
   {
     type: 'STAT-CHANGE',
@@ -36,7 +36,7 @@ Event.eventTypes = [
     type: 'STAT-CHANGE',
     notification: 'positive',
     stat: 'gold',
-    value: +50,
+    value: +150,
     text: 'You took down an rival chief! Gain  ' 
   },
   {
@@ -409,7 +409,7 @@ UI.raid = function(){
     this.NordicS.clan -= damage;
     this.NordicS.gold += spoils;
     this.notify(damage + ' '+'warriors are in Valhalla now...', 'negative');
-    this.notify('Found ' + spoils + 'worth of loot');
+    this.notify('Found ' + spoils + ' gold worth of loot');
   }
   else {
     this.NordicS.clan = 0;
@@ -592,3 +592,12 @@ Game.resumeJourney = function() {
 
 //init game
 Game.init();
+
+
+
+
+///image animations
+function myDragon(){
+  document,getElementById("dragon").style.WebkitAnimationDirection = "alternate-reverse";
+  document.getElementById("dragon").style.animationDirection = "alternate-reverse";
+}
