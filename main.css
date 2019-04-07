@@ -57,13 +57,13 @@ main{
   }
   #endhome{
     position: absolute;
-    top: 220px;
+    top: 240px;
     left: 880px;
     image-rendering: pixelated;
   }
   #dragon{
     position: absolute;
-    top: 435px;
+    top: 470px;
     left: 965px;
     z-index: 1;
     -webkit-animation-name: mydragon;
@@ -88,7 +88,7 @@ main{
   #wrekt{
     z-index: 1;
     left:750px;
-    top: 559px;
+    top: 610px;
     position: absolute;
   }
  #wrekt:hover{
@@ -200,7 +200,7 @@ main{
 
 .row {
   height: 7rem;
-  /*border: 3px solid black;*/
+  border: 3px solid black;
   height: 9rem;
   width: 46rem;
   background-color: rgb(99, 125, 176);
@@ -279,9 +279,19 @@ div#stats-area{
 }
 h1{
   text-align: center;
+  font-family: Norse-Bold;
+  font-size: 60px;
+
+  color: white;
 
 }
 
+h2{
+  text-align: center;
+  font-family: Norse;
+
+  color: white;
+}
 
 
 
