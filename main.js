@@ -30,14 +30,14 @@ Event.eventTypes = [
     notification: 'negative',
     stat: 'gold',
     value: -50,
-    text: 'Another clan raids you! They steal ' 
+    text: 'Another clan raids you! Gold lost:' 
   },
   {
     type: 'STAT-CHANGE',
     notification: 'positive',
     stat: 'gold',
     value: +150,
-    text: 'You took down an rival chief! Gain  ' 
+    text: 'You took down an rival chief! Gold gain:  ' 
   },
   {
     type: 'STAT-CHANGE',
@@ -65,7 +65,7 @@ Event.eventTypes = [
     notification: 'positive',
     stat: 'ships',
     value: 3,
-    text: 'Found a new ally! Gain ships: '
+    text: 'Found a new ally! Ships gained: '
   },
   {
     type: 'STAT-CHANGE',
@@ -601,3 +601,19 @@ function myDragon(){
   document,getElementById("dragon").style.WebkitAnimationDirection = "alternate-reverse";
   document.getElementById("dragon").style.animationDirection = "alternate-reverse";
 }
+
+document.getElementById("rulecontainer").addEventListener('mouseover', () => 
+  document.getElementById('text').classList.add('show')
+)
+
+document.getElementById("rulecontainer").addEventListener('mouseout', () => 
+  document.getElementById('text').classList.remove('show')
+)
+
+document.getElementById("contactinfo").addEventListener('mouseover', () => 
+  document.getElementById('contactlinks').classList.add('show')
+)
+
+document.getElementById("contactinfo").addEventListener('mouseout', () => 
+  document.getElementById('contactlinks').classList.remove('show')
+)

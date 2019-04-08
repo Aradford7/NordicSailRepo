@@ -57,17 +57,17 @@ main{
   }
   #endhome{
     position: absolute;
-    top: 240px;
-    left: 880px;
+    top: 33%;
+    left: 62%;
     image-rendering: pixelated;
   }
   #dragon{
     position: absolute;
-    top: 470px;
-    left: 965px;
+    top: 63%;
+    left: 75%;
     z-index: 1;
     -webkit-animation-name: mydragon;
-    -webkit-animation-duration: 5s;
+    -webkit-animation-duration: 20s;
     -webkit-animation-iteration-count: infinite;
     -webkit-animation-direction: alternate-reverse;
     animation-name: mydragon;
@@ -78,17 +78,17 @@ main{
   }
   /*safari webkit makes dragon go back and forth in 20s */
   @-webkit-keyframes mydragon{
-    from {left: 700px;}
-    to {left:965px;}
+    from {left: 600px;}
+    to {left:885px;}
   }
   @keyframes mydragon{
-    from {left: 700px;}
-    to {left:965px;}
+    from {left: 600px;}
+    to {left:885px;}
   }
   #wrekt{
     z-index: 1;
-    left:750px;
-    top: 610px;
+    left:50%;
+    top: 81%;
     position: absolute;
   }
  #wrekt:hover{
@@ -183,9 +183,10 @@ main{
   
   #raid {
     float: left;
-    background-color: white;
+    background-color: rgb(99, 125, 176);
     margin: 1px;
     padding: 1px;
+    text-align: center;
    /* height: 60px;
     width: 150px;*/
  
@@ -293,8 +294,78 @@ h2{
   color: white;
 }
 
+#attack-description{
+  border:none;
+  width:100px;
+  height:25px;
+  text-align:center;
+  background-color: rgb(99, 125, 176);
+  color: white;
+}
 
+#rulecontainer{
+    height: 29px;
+    width: 100px;
+    background-color: rgb(99, 125, 176);
+    font-family: Norse;
+    top: -454px;
+    left: 500px;
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 25px;
+    position: relative;
+    padding: 10px;
+}
 
+#text{
+  background-color: white;
+  padding: 20px;
+  display: none;
+  font-family: Norse;
+  text-align: center;
+  width:150px;
+  height: 300px;
+  top: -481px;
+  left: 599px;
+  position: relative;
+}
+
+#rulecontainer:hover > #text{
+  display: block;
+}
+
+#contactinfo{
+  height: 29px;
+  width: 100px;
+  background-color: rgb(99, 125, 176);
+  font-family: Norse;
+  top:-469px;
+  left:900px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 25px;
+  position: relative;
+  padding: 10px;
+}
+#contactlinks{
+  background-color: white;
+  padding: 20px;
+  display: none;
+  font-family: Norse;
+  text-align: center;
+  width:150px;
+  height: 300px;
+  top: -481px;
+  left: 1092px;
+  position: relative;
+}
+#contactinfo:hover #contactlinks{
+  display: block;
+}
+
+.show {
+  display: block!important;
+}
 
 /* CSS Button animation
 
