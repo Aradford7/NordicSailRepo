@@ -60,17 +60,17 @@ main{
     /* top: 28%;
     left: 60%; */
     image-rendering: pixelated;
-    margin-left: 125px;
+    margin-left: 10git5px;
     /* margin-bottom: 19px; */
     top: -9px;
     image-rendering: pixelated;
     z-index: 100;
-    width: 170px;
+    width: 200px;
     height:auto;
   }
   #dragon{
     position: absolute;
-    top: 104%;
+    top: 124%;
     left: 50%;
     z-index: 1;
     -webkit-animation-name: mydragon;
