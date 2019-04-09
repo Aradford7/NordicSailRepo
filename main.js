@@ -289,7 +289,8 @@ UI.notify = function(message, type){
   document.getElementById('updates-area').innerHTML = '<div class="update-' + type + '">Day '+ Math.ceil(this.NordicS.day) + ': ' + message+'</div>' + document.getElementById('updates-area').innerHTML;
 };
 
-//refresh visual caravan stats
+/*----- cached element references -----*/ 
+//refresh visual ship stats
 UI.refreshStats = function() {
   //modify the dom
   document.getElementById('stat-day').innerHTML = Math.ceil(this.NordicS.day);
@@ -301,7 +302,7 @@ UI.refreshStats = function() {
   document.getElementById('stat-ax').innerHTML = this.NordicS.ax;
   document.getElementById('stat-weight').innerHTML = Math.ceil(this.NordicS.weight) + '/' + this.NordicS.capacity;
 
-  //update caravan position
+  //update ship position
   document.getElementById('vship').style.left = (380 * this.NordicS.distance/finalDistance) + 'px';
 };
 
@@ -381,7 +382,7 @@ UI.buyProduct = function(product) {
   return true;
 
 };
-
+/*----- event listeners -----*/
 //show attack
 UI.showRaid = function(ax, spoils) {
   var raidDiv = document.getElementById('raid');
@@ -406,7 +407,7 @@ UI.showRaid = function(ax, spoils) {
     this.attackInitiated = true;
   }
 };
-
+/*----- functions -----*/
 //RAID
 UI.raid = function(){
 
@@ -461,6 +462,7 @@ UI.retreat = function(){
 
 
 //constants/////////////////////////////////CONSTANTS///////////////////////////////////
+/*----- constants -----*/
 weightPerShip = 20;
 weightPerPerson = 2;
 foodWeight = 0.6;
@@ -477,6 +479,7 @@ enemyGoldAvg = 50;
 
 Game = {};
 
+/*----- app's state (variables) -----*/
 //initiate the game
 Game.init = function(){
 
@@ -486,7 +489,7 @@ Game.init = function(){
   //reference event manager
   this.eventManager = Event;
 
-  //setup caravan
+  //setup game
   this.NordicS = NordicS;
   this.NordicS.init({
     day: 0,
@@ -607,7 +610,7 @@ Game.init();
 
 
 
-
+/*----- event listeners -----*/
 ///image animations
 function myDragon(){
   document,getElementById("dragon").style.WebkitAnimationDirection = "alternate-reverse";
@@ -630,3 +633,14 @@ document.getElementById("contactinfo").addEventListener('mouseout', () =>
   document.getElementById('contactlinks').classList.remove('show')
 )
 
+//render
+
+// function render() {
+// 	renderHands();
+// 	renderControls();
+// 	if (this.NordicS.distance >= finalDistance) {
+// 		renderWinnerMessage('You have won!');
+// 	} else {
+// 		renderTurnMessage();
+// 	}
+// }
