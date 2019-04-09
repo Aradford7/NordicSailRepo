@@ -6,6 +6,7 @@ until they reach their journey back home. Different events will appear and allow
 the player to control the choices they want to do to ensure their clan's safety.
 
 * Goal: Bring back as much loot safely back home!
+![preview](https://raw.githubusercontent.com/Aradford7/NordicSailRepo/master/images/screenshot.png)
 
 
 ## Technologies Used:
