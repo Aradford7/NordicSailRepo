@@ -5,7 +5,7 @@
 until they reach their journey back home. Different events will appear and allow
 the player to control the choices they want to do to ensure their clan's safety.
 
-*Goal: Bring back as much loot safely back home!
+* Goal: Bring back as much loot safely back home!
 
 
 ## Technologies Used:
