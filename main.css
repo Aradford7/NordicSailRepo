@@ -347,7 +347,7 @@ a {
   height: 300px;
   top: -481px;
   left: 599px;
-  position: relative;
+  position: absolute;
 }
 
 #rulecontainer:hover > #text{
@@ -377,7 +377,7 @@ a {
   height: 300px;
   top: -481px;
   left: 850px;
-  position: relative;
+  position: absolute;
   z-index: -1;
 }
 #contactinfo:hover #contactlinks{
