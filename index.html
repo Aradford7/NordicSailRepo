@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+    <iframe src="music/AakashGandhi.mp3"  type = "audio/mpeg" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
+    <audio autoplay loop  id="playAudio">
+            <source src="music/AakashGandhi.mp3">
+    </audio>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Nordic Sail</title>
@@ -10,7 +15,6 @@
 </head>
 <body>
     <h1>Nordic Sail</h1>
-    <h2>Inspired by the classic game Oregon Trail.</h2>
     <div id = "home">
         <div id = "journey">
             <div class='row'>
@@ -48,13 +52,13 @@
                     <!----<div class = "updates-area" id = "updates-area"></div> -->
                     <div id = "shop" class = "hidden">
                         <div id = "prods"></div>
-                        <button id = "leave">Leave Shop</button>
+                        <button id = "leave" class = "leavebtn">Leave Shop</button>
                     </div>
                     <img id = "wrekt" src = "images/wrekt.png">
                     <div id = "raid"  class ="hidden">
                         <div id = "attack-description"></div>
-                        <button id = "raid">Raid</button>
-                        <button id = "retreat">Retreat</button>
+                        <button id = "raid" class = "raidbtn">Raid</button>
+                        <button id = "retreat" class = "retreatbtn">Retreat</button>
                     </div>           
                 </div> 
             </div>
@@ -77,6 +81,11 @@
 </div>
     <div id = "contactlinks">GitHub HyperLink -Here-</div>
     <script src="main.js"></script>
+
+  <!--<audio class='intro' controls autoplay>
+            <source src="music/AakashGandhi.mp3"  type = "audio/mpeg">
+    </audio>--> 
+
 </body>
 <script defer="defer" src="main.js"></script>
 </html>

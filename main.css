@@ -60,7 +60,7 @@ main{
     /* top: 28%;
     left: 60%; */
     image-rendering: pixelated;
-    margin-left: 10git5px;
+    margin-left: 105px;
     /* margin-bottom: 19px; */
     top: -9px;
     image-rendering: pixelated;
@@ -212,7 +212,7 @@ main{
 
 .row {
   height: 7rem;
-  border: 3px solid black;
+  /*border: 3px solid black;*/
   height: 9rem;
   width: 46rem;
   background-color: rgb(99, 125, 176);
@@ -262,7 +262,7 @@ div.stat{
 }
 
 /*shop and raid box*/
-div.shop{
+div#shop{
   border: none;
   font-size: 10px;
 }
@@ -296,7 +296,7 @@ div#stats-area{
 h1{
   text-align: center;
   font-family: Norse-Bold;
-  font-size: 60px;
+  font-size: 75px;
 
   color: white;
 
@@ -305,7 +305,7 @@ h1{
 h2{
   text-align: center;
   font-family: Norse;
-
+  margin-top: 30px;
   color: white;
 }
 
@@ -384,12 +384,29 @@ h2{
   display: block!important;
 }
 
-/* CSS Button animation
+
+
+/* CSS Button animation*/
+.raidbtn{
+  color:white;
+  background-color:red;
+}
+.retreat{
+  color:black;
+}
+.retreatbtn{
+  background-color:white;
+  color:black;
+ 
+}
+
+.leave{
+  color:white;
+  background-color:lightgreen;
+}
 
 
 
 
 
 
-
-/*

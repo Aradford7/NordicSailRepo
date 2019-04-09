@@ -1,4 +1,15 @@
 console.log("Nordic Sail Game");
+///music
+var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+if(!isChrome){
+  $('#iframeAudio').remove()
+}
+else{
+ $('#playAudio').remove() //just to make sure that it will not have 2x audio in the background 
+}
+
+
+//object.addEventListener("load", myScript);
 //////////////////////////////////////////////////////////////////////////////
 ///EVENTS///////////////////////
 Event = {};
@@ -15,7 +26,7 @@ Event.eventTypes = [
     type: 'STAT-CHANGE',
     notification: 'negative',
     stat: 'clan',
-    value: -4,
+    value: -2,
     text: 'Rebellion! Casualties: '
   },
   {
@@ -36,7 +47,7 @@ Event.eventTypes = [
     type: 'STAT-CHANGE',
     notification: 'positive',
     stat: 'gold',
-    value: +150,
+    value: +300,
     text: 'You took down an rival chief! Gold gain:  ' 
   },
   {
@@ -80,7 +91,7 @@ Event.eventTypes = [
     text: 'You have found a merchant!',
     products: [
       {item: 'food', qty: 20, price: 50},
-      {item: 'ships', qty: 1, price: 200},
+      {item: 'ships', qty: 1, price: 300},
       {item: 'ax', qty: 2, price: 50},
       {item: 'clan', qty: 5, price: 80}
     ]
@@ -91,7 +102,7 @@ Event.eventTypes = [
     text: 'You have found an ally merchant',
     products: [
       {item: 'food', qty: 30, price: 50},
-      {item: 'ships', qty: 1, price: 200},
+      {item: 'ships', qty: 1, price: 100},
       {item: 'ax', qty: 2, price: 20},
       {item: 'clan', qty: 10, price: 80}
     ]
@@ -102,7 +113,7 @@ Event.eventTypes = [
     text: 'Stumble upon a viking village selling various goods!',
     products: [
       {item: 'food', qty: 20, price: 60},
-      {item: 'ships', qty: 1, price: 300},
+      {item: 'ships', qty: 1, price: 200},
       {item: 'ax', qty: 2, price: 80},
       {item: 'clan', qty: 5, price: 60}
     ]
@@ -202,7 +213,7 @@ Event.raidEvent = function(eventData){
     this.ui.showRaid(ax,spoils);
 };
 
-///////////NordicS/////////////////////////////////////////////////////////////////
+///////////NordicS=player/////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 NordicS = {};
@@ -449,7 +460,7 @@ UI.retreat = function(){
 
 
 
-//constants
+//constants/////////////////////////////////CONSTANTS///////////////////////////////////
 weightPerShip = 20;
 weightPerPerson = 2;
 foodWeight = 0.6;
@@ -536,6 +547,7 @@ Game.step = function(timestamp) {
 
 //update game stats
 Game.updateGame = function() {
+ 
   //day update
   this.NordicS.day += dayPerStep;
 
@@ -617,3 +629,4 @@ document.getElementById("contactinfo").addEventListener('mouseover', () =>
 document.getElementById("contactinfo").addEventListener('mouseout', () => 
   document.getElementById('contactlinks').classList.remove('show')
 )
+
