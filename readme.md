@@ -29,7 +29,7 @@ the player to control the choices they want to do to ensure their clan's safety.
         *  Find gold by raiding to use in the shop to purchase goods to help your surivival!
         *  Survive raids, lower weapon damage has higher chance to lose more clan members in battle.
         *  Having more ships allows your group to carry more loot!
-    ![alt text](https://raw.githubusercontent.com/Aradford7/NordicSailRepo/master/images/to/screenshot.png)
+   
 
 ## Next Steps: 
 * DRY method const, let, classes
