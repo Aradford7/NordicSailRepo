@@ -1,7 +1,6 @@
 # Nordic Sail 
-```
-## Description
 
+## Description
 * Based on the classic game Oregon Trail. Help your viking clan survive and raid 
 until they reach their journey back home. Different events will appear and allow
 the player to control the choices they want to do to ensure their clan's safety.
