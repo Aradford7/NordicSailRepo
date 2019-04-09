@@ -1,17 +1,17 @@
 # Nordic Sail 
 <NORDIC SAIL>
-### Description
+# Description
 * Based on the classic game Oregon Trail. Help your viking clan survive and raid 
 until they reach their journey back home. Different events will appear and allow
 the player to control the choices they want to do to ensure their clan's safety.
 * Goal: Bring back as much loot safely back home!
-### Technologies Used:
+# Technologies Used:
  * HTML 5 and CSS 3
  * Vanilla JS
  * DOM manipulation
  * CSS animations
  * Photoshop
-### Getting Started:
+# Getting Started:
 * Play Here: ashr.info
 * How to play!
     * Goal: Survive to 1000 distance and try to bring as much loot back to your home!
