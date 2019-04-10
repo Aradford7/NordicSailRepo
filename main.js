@@ -571,7 +571,7 @@ eventProbability = 0.15;
 enemyWeaponDmgAvg = 5;
 enemyGoldAvg = 50;
 
-Game = {};
+const Game = {};
 
 /*----- app's state (variables) -----*/
 //initiate the game
