@@ -343,11 +343,12 @@ a {
   display: none;
   font-family: Norse;
   text-align: center;
-  width:150px;
+  width: 150px;
   height: 500px;
-  top: -481px;
-  left: 599px;
+  top: 225;
+  left: 400px;
   position: absolute;
+  z-index: 5;
 }
 
 #rulecontainer:hover > #text{
@@ -375,10 +376,10 @@ a {
   text-align: center;
   width:150px;
   height: 200px;
-  top: -481px;
-  left: 650px;
+  top: 250;
+  left: 900px;
   position: absolute;
-  z-index: -1;
+  z-index: 5;
 }
 #contactinfo:hover #contactlinks{
   display: block;
