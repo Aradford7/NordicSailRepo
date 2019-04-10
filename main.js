@@ -377,7 +377,7 @@ UI.showShop = function(products){
   shopDiv.classList.remove('hidden');
 
   //init the shop just once
-  if(!this.shopInitiated) {               //needs to be not initated so that the eventlistner can target the user choice of item to buy or not to buy but to continue the game by exit after hitting button
+  if(!this.shopInitiated) {  //needs to be not initated so that the eventlistner can target the user choice of item to buy or not to buy but to continue the game by exit after hitting button
 
     //event delegation
     shopDiv.addEventListener('click', function(e){
@@ -385,7 +385,7 @@ UI.showShop = function(products){
       let target = e.target || e.src;
 
       //exit button
-      if(target.tagName == 'BUTTON') {          // after target if the the target has tag name  ==  button exit by hiding the shop and resume journey, if doesnt buy just to continue the game
+      if(target.tagName == 'BUTTON') {     // after target if the the target has tag name  ==  button exit by hiding the shop and resume journey, if doesnt buy just to continue the game
         //resume journey
         shopDiv.classList.add('hidden');
         UI.game.resumeJourney();
@@ -429,7 +429,13 @@ UI.showShop = function(products){
 };
 
 //buy product
-//
+
+//function to check if we can afford it, if the product price is higher than the players gold 
+// send ui string message not enough gold.
+
+//if can afford minus product price from players gold and show player they bought which item and how many
+
+//update weight by objects 
 
 UI.buyProduct = function(product) {
   //check we can afford it
@@ -455,6 +461,10 @@ UI.buyProduct = function(product) {
 };
 /*----- event listeners -----*/
 //show attack
+
+// show attack from being hidden
+// declare the variables
+// if the raid starts then bind the raid and retreat to their eventlistner buttons
 UI.showRaid = function(ax, spoils) {
   let raidDiv = document.getElementById('raid');
   raidDiv.classList.remove('hidden');
@@ -480,6 +490,14 @@ UI.showRaid = function(ax, spoils) {
 };
 /*----- functions -----*/
 //RAID
+
+//reason to the declare bc in different scopes. 
+//damage =  to math max of wp damage *2 * mathrandom - player  wp damage (give wp damage difference)
+//check if play survive damage less than the number of people
+// clan decrease by damage
+// gold increase by spoils // send ui string msg of ppl lost from raiding
+//else if clan falls 0 stirng msg that game over
+//resume journey get rid of game pause function once its initiated.
 UI.raid = function(){
 
   let ax = this.ax;
@@ -504,7 +522,13 @@ UI.raid = function(){
   this.game.resumeJourney();
 };
 
-//runing away from enemy
+//running away from enemy
+
+//retreat function if the damage math max*ax* mathrandom/2 (increased loss rate for retreating than fighting)
+//if the damage is less than number of people decrease ppl by damage and notify ui to string msg to player
+// else if ppl reach 0 then string msg game is over
+//remove event listner to continue the game so game can resume
+
 UI.retreat = function(){
 
   let ax = this.ax;
@@ -559,7 +583,7 @@ Game.init = function(){
   //reference event manager
   this.eventManager = Event;
 
-  //setup game
+  //setup game initat game class
   this.NordicS = NordicS;
   this.NordicS.init({
     day: 0,
@@ -571,7 +595,7 @@ Game.init = function(){
     ax: 2
   });
 
-  //pass references
+  //pass references objects
   this.NordicS.ui = this.ui;
   this.NordicS.eventManager = this.eventManager;
 
@@ -590,7 +614,7 @@ Game.init = function(){
 //start the journey and time starts running
 Game.startJourney = function() {
   this.gameActive = true;
-  this.previousTime = null;
+  this.previousTime = null; //previous time hasnt started
   this.ui.notify('Sail And Pillage The West', 'positive');
 
   this.step();
@@ -600,6 +624,7 @@ Game.startJourney = function() {
 Game.step = function(timestamp) {
 
   //starting, setup the previous time for the first time
+  // if not previous time, previous time = timestamp(tracking object) update game
   if(!this.previousTime){
     this.previousTime = timestamp;
     this.updateGame();
@@ -609,12 +634,14 @@ Game.step = function(timestamp) {
   let progress = timestamp - this.previousTime;
 
   //game update
+  //if the progress is higher or equal to game speed update game
   if(progress >= gameSpeed) {
     this.previousTime = timestamp;
     this.updateGame();
   }
 
   //we use "bind" so that we can refer to the context "this" inside of the step method
+  //binding the sail progress animation using this
   if(this.gameActive) window.requestAnimationFrame(this.step.bind(this));
 };
 
@@ -626,7 +653,7 @@ Game.updateGame = function() {
 
   //food consumption
   this.NordicS.consumeFood();
-
+// if food = 0 ui notify player all clan ppl starved game is over
   if(this.NordicS.food === 0) {
     this.ui.notify('Your clan starved to death!', 'negative');
     this.gameActive = false;
@@ -643,6 +670,7 @@ Game.updateGame = function() {
   this.ui.refreshStats();
 
   //check if everyone died
+  // clan is less than 0 or clan = 0  ui notify player everyone in the clan died, game is over
   if(this.NordicS.clan <= 0) {
     this.NordicS.clan = 0;
     this.ui.notify('Your clan has fallen! Everyone is dead', 'negative');
@@ -651,13 +679,14 @@ Game.updateGame = function() {
   }
 
   //check win game
+  //if distance greater than final distance ui notify player they won
   if(this.NordicS.distance >= finalDistance) {
     this.ui.notify('Bless Odin! You have returned home! Celebrate your victory!', 'positive');
     this.gameActive = false;
     return;
   }
 
-  //random events
+  //random events function controlling all the random events
   if(Math.random() <= eventProbability) {
     this.eventManager.generateEvent();
   }
@@ -681,12 +710,12 @@ Game.init();
 
 
 /*----- event listeners -----*/
-///image animations
+///image animations for teh dragon to swim in the water
 function myDragon(){
   document,getElementById("dragon").style.WebkitAnimationDirection = "alternate-reverse";
   document.getElementById("dragon").style.animationDirection = "alternate-reverse";
 }
-
+// hover animation for boxes
 document.getElementById("rulecontainer").addEventListener('mouseover', () => 
   document.getElementById('text').classList.add('show')
 )
@@ -703,14 +732,3 @@ document.getElementById("contactinfo").addEventListener('mouseout', () =>
   document.getElementById('contactlinks').classList.remove('show')
 )
 
-//render
-
-// function render() {
-// 	renderHands();
-// 	renderControls();
-// 	if (this.NordicS.distance >= finalDistance) {
-// 		renderWinnerMessage('You have won!');
-// 	} else {
-// 		renderTurnMessage();
-// 	}
-// }
