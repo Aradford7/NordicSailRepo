@@ -328,8 +328,8 @@ a {
     width: 100px;
     background-color: rgb(99, 125, 176);
     font-family: Norse;
-    top: 218px;
-    left: 700px;
+    top: 13px;
+    left: 400px;
     text-align: center;
     border: 1px solid black;
     border-radius: 25px;
@@ -344,10 +344,10 @@ a {
   font-family: Norse;
   text-align: center;
   width:150px;
-  height: 300px;
+  height: 500px;
   top: -481px;
   left: 599px;
-  position: relative;
+  position: absolute;
 }
 
 #rulecontainer:hover > #text{
@@ -359,7 +359,7 @@ a {
   width: 100px;
   background-color: rgb(99, 125, 176);
   font-family: Norse;
-  top: 218px;
+  top: 13px;
   left: 900px;
   text-align: center;
   border: 1px solid black;
@@ -374,10 +374,10 @@ a {
   font-family: Norse;
   text-align: center;
   width:150px;
-  height: 300px;
+  height: 200px;
   top: -481px;
   left: 650px;
-  position: relative;
+  position: absolute;
   z-index: -1;
 }
 #contactinfo:hover #contactlinks{
@@ -410,8 +410,10 @@ a {
 }
 
 
-
-
+#content{
+  position: absolute;
+ 
+}
 
 
 /*bl;eh bleh*/
