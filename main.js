@@ -1,6 +1,9 @@
-console.log("Nordic Sail Game");
+//console.log("Nordic Sail Game");//testing js
 ///music
-var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+// const isChrome browser = test for chrome and google if it not chrome then remove the iframe link and play Audio. 
+// iframe= chrome
+//so if it is chrome iframe plays.
+const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 if(!isChrome){
   $('#iframeAudio').remove()
 }
@@ -12,7 +15,9 @@ else{
 //object.addEventListener("load", myScript);
 //////////////////////////////////////////////////////////////////////////////
 ///EVENTS///////////////////////
-Event = {};
+
+// Event object elements of event type inside// get rid of first object and make it DRY-ER!!
+const Event = {};
 
 Event.eventTypes = [
   {
@@ -134,18 +139,24 @@ Event.eventTypes = [
     text: 'Rival vikings are attacking you!'
   }
 ];
-
+// Function pulls object Event and generates events by randomly selecting one from eventindex
+// math floor rounds down the number to whole and math randomize times entire length of the eventtype string from Event object literal
+//eventdata  =  event types[calls on index]
+//if event data  type is stat-change - this object stateChangeEvent shows the eventData; event that consist in updating a stat
 Event.generateEvent = function(){
   //pick random one
-  var eventIndex = Math.floor(Math.random() * this.eventTypes.length);
-  var eventData = this.eventTypes[eventIndex];
+  let eventIndex = Math.floor(Math.random() * this.eventTypes.length);
+  let eventData = this.eventTypes[eventIndex];
 
   //events that consist in updating a stat
   if(eventData.type == 'STAT-CHANGE') {
     this.stateChangeEvent(eventData);
   }
 
-  //shops
+  //shops 
+  // if the eventData type is shop then pause the game, tell the user (object ui) to notify player with the eventData text and notification.
+  //this shopEvent pulls from eventData and this. state ChangeEvent(eventData) so it updates
+  //this.shopEvent prepares the event to run
   else if(eventData.type == 'SHOP') {
     //pause game
     this.game.pauseJourney();
@@ -158,6 +169,9 @@ Event.generateEvent = function(){
   }
 
   //attacks
+  // if the eventData type is Raid then pause the game, tell the user(UI) the eventdata text and notification
+  //this raidEvent pulls from the event Data and changes the update the eventdata
+  //and prepares the event to run
   else if(eventData.type == 'RAID') {
     //pause game
     this.game.pauseJourney();
@@ -169,7 +183,10 @@ Event.generateEvent = function(){
     this.raidEvent(eventData);
   }
 };
-
+//function for the stateChange event to activate
+// cant have negative quantiies if the eventdata value and the game eventdata stat is over or equal to 0
+//then the object game(eventdata stats) adds to the eventdata value
+//then the ui notify player the eventtext and rounds the eventdata value as whole numbers and shows eventdata notification.
 Event.stateChangeEvent = function(eventData) {
   //can't have negative quantities
   if(eventData.value + this.NordicS[eventData.stat] >= 0) {
@@ -177,16 +194,22 @@ Event.stateChangeEvent = function(eventData) {
     this.ui.notify(eventData.text + Math.abs(eventData.value), eventData.notification);
   }
 };
-
+// object event that calls upon shopEvent is equal to eventData (same array)
+//let number of products for sale equal to a random number up to 4 items
+//product list is in a set array, declare variables j and priceFactor
+//for loop i = 0, i is less than number of product (4), j equal to rounding down to whole number  and randomizing the products in that array
+// priceFactor sets a random price between 30-35% of original set price (so each item can have different prices)
+//then push the product in the new array - with elements of the item product, the quantity, and random product price * the scale of the price 30-35%
+//the ui shows players of the products in the show with item price and  qty 
 Event.shopEvent = function(eventData) {
   //number of products for sale
-  var numProds = Math.ceil(Math.random() * 4);
+  let numProds = Math.ceil(Math.random() * 4);
 
   //product list
-  var products = [];
-  var j, priceFactor;
+  let products = [];
+  let j, priceFactor;
 
-  for(var i = 0; i < numProds; i++) {
+  for(let i = 0; i < numProds; i++) {
     //random product
     j = Math.floor(Math.random() * eventData.products.length);
 
@@ -206,9 +229,13 @@ Event.shopEvent = function(eventData) {
 
 
 //prepare an attack event
+//object event raid events function calls on ax(weapondamage) = round between 30-35% of base enemy damage
+//spoils(gold)rounds 30-35% of the enemy gold average
+//30-35% give user advantage to overtake the AI increasing chance of winning
+//show the gold and damage to player via ui object (only the numbers!) later they are put in a string to show the notifcation to user
 Event.raidEvent = function(eventData){
-    var ax = Math.round((0.7 +0.6* Math.random())* enemyWeaponDmgAvg);
-    var spoils = Math.round((0.7+0.6 * Math.random())*enemyGoldAvg);
+    let ax = Math.round((0.7 +0.6* Math.random())* enemyWeaponDmgAvg);
+    let spoils = Math.round((0.7+0.6 * Math.random())*enemyGoldAvg);
     
     this.ui.showRaid(ax,spoils);
 };
@@ -216,8 +243,10 @@ Event.raidEvent = function(eventData){
 ///////////NordicS=player/////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-NordicS = {};
+//this is the Game function! NordicS= Game controls
+ const NordicS = {};
 
+//game starts allow these stats to be objects can be alter/call upon later as the game updates itself with values from the eventtypes
 NordicS.init = function(stats){
   this.day = stats.day;
   this.distance = stats.distance;
@@ -230,11 +259,19 @@ NordicS.init = function(stats){
 
 
 //update weight and capacity
+// game update weight stats, ship starts up with dropping 0 food and weapons, decalre droppedFood and droppedWeapons as a variable to be able to alter later as
+//the ship weight increases and maxed out. If max out drop the items.
+//capacity is equal to (number of ships* weight of the ships) add + (number of clan people * weight of each clan person)//HOW MUCH IT CAN CARRY
+//Current weight this weight equal to (number of food *food weight) + (number of weapons-ax * weapon weight ) //Tracks weight the player has only values that contribute to capacity player has
+//to drop items... drop items if the weight is over the capacity of what the ship can hold (number of ship/wt and number of ppl*weight)
+//while loop ( ax and capacity is less than current weight), decrease ax by 1 and the capacity decrease its value by the weapon weight. increase the droppweapon number to show how many weapons are dropped
+//if weapons are dropped tell the user via ui that x amount of weapons were dropped, negative is only to show color style to the notification message that its a negative stat.
+//another exact function to show that food has been dropped
 NordicS.updateWeight = function(){
-  var droppedFood = 0;
-  var droppedWeapons = 0;
+  let droppedFood = 0;
+  let droppedWeapons = 0;
 
-  //how much can the caravan carry
+  //how much can the ship carry
   this.capacity = this.ships * weightPerShip + this.clan* weightPerPerson;
 
   //how much weight do we currently have
@@ -264,14 +301,26 @@ NordicS.updateWeight = function(){
 };
 
 //update covered distance
+
+//object game update distance function
+// let the difference =  to capacity minus weight
+// let the speed =  (slow speed + difference of capacity and weight / capacity * fullspeed)
+// speed =  set variable of slow + weight difference then / max of capacity * full speed to allow speed to increase or decrease depending on how much weight being carried
+//basically like oxen in Oregon trail, more oxen = faster speed
+// allow the distance to increase by adding speed
 NordicS.updateDistance = function() {
   //the closer to capacity, the slower
-  var diff = this.capacity - this.weight;
-  var speed = slowSpeed + diff/this.capacity * fullSpeed;
+  let diff = this.capacity - this.weight;
+  let speed = slowSpeed + diff/this.capacity * fullSpeed;
   this.distance += speed;
 };
 
 //food consumption
+
+// game object consume food function
+// food decreases by number of people in the clan* require amount of food per person
+// if the food is less than 0 food strictly equal to 0 // set this so it can be called upon later in ui to show user than they lost bc clan starved to death
+//loss condition food == 0  then game is lost.
 NordicS.consumeFood = function() {
   this.food -= this.clan * foodPerPerson
 
@@ -282,62 +331,77 @@ NordicS.consumeFood = function() {
 
 //////////UI/////////////////////////////////////////
 
-UI = {};
+const UI = {};
+
+
 
 //show a notification in the message area
+// pulls object UI 's notification to appear in the updates area via dom maniuplation 
+// this allow the div class containing update to display current day (math ceil to give whole number increase on current day(nordics.day) and current message in div via dom multipation
 UI.notify = function(message, type){
   document.getElementById('updates-area').innerHTML = '<div class="update-' + type + '">Day '+ Math.ceil(this.NordicS.day) + ': ' + message+'</div>' + document.getElementById('updates-area').innerHTML;
 };
 
 /*----- cached element references -----*/ 
 //refresh visual ship stats
+
 UI.refreshStats = function() {
   //modify the dom
-  document.getElementById('stat-day').innerHTML = Math.ceil(this.NordicS.day);
-  document.getElementById('stat-distance').innerHTML = Math.floor(this.NordicS.distance);
+
+  //dom modification to show updated/dynamic stat change and give whole intergers
+  document.getElementById('stat-day').innerHTML = Math.ceil(this.NordicS.day);  //ceil increase
+  document.getElementById('stat-distance').innerHTML = Math.floor(this.NordicS.distance);  //floor round down to closet whole number
   document.getElementById('stat-clan').innerHTML = this.NordicS.clan;
   document.getElementById('stat-ships').innerHTML = this.NordicS.ships;
   document.getElementById('stat-food').innerHTML = Math.ceil(this.NordicS.food);
   document.getElementById('stat-gold').innerHTML = this.NordicS.gold;
   document.getElementById('stat-ax').innerHTML = this.NordicS.ax;
-  document.getElementById('stat-weight').innerHTML = Math.ceil(this.NordicS.weight) + '/' + this.NordicS.capacity;
+  document.getElementById('stat-weight').innerHTML = Math.ceil(this.NordicS.weight) + '/' + this.NordicS.capacity; // shows in  ui like this current weight / max weight (both stat changes max weight due # of ships)
 
   //update ship position
+
+  //dom mod to dynamically grab the ship image and style it to move left to (base speed of 380 * current game distance/final distance) 
+  //px string image to move
   document.getElementById('vship').style.left = (380 * this.NordicS.distance/finalDistance) + 'px';
 };
 
 //show shop
+
+//UI shop items to show for user
+// shop div calls on shop remove the hidden class once shop is initaited
+// if shop not  initated  add eventlistner to target e. src = product 
 UI.showShop = function(products){
 
   //get shop area
-  var shopDiv = document.getElementById('shop');
+  let shopDiv = document.getElementById('shop');
   shopDiv.classList.remove('hidden');
 
   //init the shop just once
-  if(!this.shopInitiated) {
+  if(!this.shopInitiated) {               //needs to be not initated so that the eventlistner can target the user choice of item to buy or not to buy but to continue the game by exit after hitting button
 
     //event delegation
     shopDiv.addEventListener('click', function(e){
       //what was clicked
-      var target = e.target || e.src;
+      let target = e.target || e.src;
 
       //exit button
-      if(target.tagName == 'BUTTON') {
+      if(target.tagName == 'BUTTON') {          // after target if the the target has tag name  ==  button exit by hiding the shop and resume journey, if doesnt buy just to continue the game
         //resume journey
         shopDiv.classList.add('hidden');
         UI.game.resumeJourney();
       }
-      else if(target.tagName == 'DIV' && target.className.match(/product/)) {
+      else if(target.tagName == 'DIV' && target.className.match(/product/)) {      //if else the target tag name == 'DIV' and the target className match in products 
 
         //console.log('buying')
 
-        var bought = UI.buyProduct({
+        // bought =  buy product in UI. show item attribute data item, show item attribute qty and price
+        let bought = UI.buyProduct({
           item: target.getAttribute('data-item'),
           qty: target.getAttribute('data-qty'),
           price: target.getAttribute('data-price')
         });
 
-        if(bought) target.html = '';
+        if(bought) target.html = '';    // if the item is bought target the inner html in shopDiv products
       }
     });
 
@@ -345,12 +409,17 @@ UI.showShop = function(products){
   }
 
   //clear existing content
-  var prodsDiv = document.getElementById('prods');
+
+  // let the product div dom manipluation from inner html
+  let prodsDiv = document.getElementById('prods');
   prodsDiv.innerHTML = '';
 
   //show products
-  var product;
-  for(var i=0; i < products.length; i++) {
+  
+  // product for i = 0, and i is less than the product length increase make product =  to product[i] <= so all items are in an array
+  // use dom manipluation to pull the inner html prod and link product qty, product item and product price
+  let product;
+  for(let i=0; i < products.length; i++) {
     product = products[i];
     prodsDiv.innerHTML += '<div class="product" data-qty="' + product.qty + '" data-item="' + product.item + '" data-price="' + product.price + '">' + product.qty + ' ' + product.item + ' - $' + product.price + '</div>';
   }
@@ -360,6 +429,8 @@ UI.showShop = function(products){
 };
 
 //buy product
+//
+
 UI.buyProduct = function(product) {
   //check we can afford it
   if(product.price > UI.NordicS.gold) {
@@ -385,7 +456,7 @@ UI.buyProduct = function(product) {
 /*----- event listeners -----*/
 //show attack
 UI.showRaid = function(ax, spoils) {
-  var raidDiv = document.getElementById('raid');
+  let raidDiv = document.getElementById('raid');
   raidDiv.classList.remove('hidden');
 
   //keep properties
@@ -411,10 +482,10 @@ UI.showRaid = function(ax, spoils) {
 //RAID
 UI.raid = function(){
 
-  var ax = this.ax;
-  var spoils = this.spoils;
+  let ax = this.ax;
+  let spoils = this.spoils;
 
-  var damage = Math.ceil(Math.max(0, ax * 2 * Math.random() - this.NordicS.ax));
+  let damage = Math.ceil(Math.max(0, ax * 2 * Math.random() - this.NordicS.ax));
 
   //check there are survivors
   if(damage < this.NordicS.clan) {
@@ -436,9 +507,9 @@ UI.raid = function(){
 //runing away from enemy
 UI.retreat = function(){
 
-  var ax = this.ax;
+  let ax = this.ax;
 
-  var damage = Math.ceil(Math.max(0, ax * Math.random()/2));
+  let damage = Math.ceil(Math.max(0, ax * Math.random()/2));
 
   //check there are survivors
   if(damage < this.NordicS.clan) {
@@ -458,7 +529,6 @@ UI.retreat = function(){
   this.game.resumeJourney();
 
 };
-
 
 
 //constants/////////////////////////////////CONSTANTS///////////////////////////////////
@@ -536,7 +606,7 @@ Game.step = function(timestamp) {
   }
 
   //time difference
-  var progress = timestamp - this.previousTime;
+  let progress = timestamp - this.previousTime;
 
   //game update
   if(progress >= gameSpeed) {
