@@ -328,12 +328,12 @@ a {
     width: 100px;
     background-color: rgb(99, 125, 176);
     font-family: Norse;
-    top: -450px;
-    left: 500px;
+    top: 218px;
+    left: 321px;
     text-align: center;
     border: 1px solid black;
     border-radius: 25px;
-    position: relative;
+    position: absolute;
     padding: 10px;
 }
 
@@ -359,12 +359,12 @@ a {
   width: 100px;
   background-color: rgb(99, 125, 176);
   font-family: Norse;
-  top:-450px;
-  left:700px;
+  top: 218px;
+  left: 700px;
   text-align: center;
   border: 1px solid black;
   border-radius: 25px;
-  position: relative;
+  position: absolute;
   padding: 10px;
 }
 #contactlinks{
