@@ -19,7 +19,7 @@ the player to control the choices they want to do to ensure their clan's safety.
 
 ## Getting Started:
 
-* Play Here: ashr.info
+* Play Here: https://aradford7.github.io/NordicSailRepo/
 
 * How to play!
 
